@@ -49,7 +49,7 @@ export class DataParser {
         description: 'Other Wood (Hardwoods)',
         reciprocal: tariffData.reciprocal,
         fentanyl: tariffData.fentanyl,
-        section301: 27.5, // Average of 25-30
+        section301: 27.5,
         total: tariffData.reciprocal + tariffData.fentanyl + 27.5
       },
       {
@@ -110,14 +110,8 @@ export class DataParser {
     headcount: number
   ) {
     const chinaRevenue = revenue * (exportPct / 100) * (chinaPct / 100);
-    
-    // Scenario C: -90% volume
     const revenueAtRisk = chinaRevenue * 0.9;
-    
-    // Probability-weighted: 50% * 0% + 25% * -15% + 25% * -35% = -12.5% avg
-    const expectedRevenue = revenue * 0.947; // 5.3% decline
-    
-    // Jobs proportional to revenue
+    const expectedRevenue = revenue * 0.947;
     const jobsAtRisk = Math.round(headcount * (revenueAtRisk / revenue));
     const expectedJobs = Math.round(headcount * 0.053);
     
