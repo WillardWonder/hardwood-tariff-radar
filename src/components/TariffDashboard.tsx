@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CurrentStatus } from './CurrentStatus';
 import { ScenarioCards } from './ScenarioCards';
 import { ImpactCalculator } from './ImpactCalculator';
 import { DataSources } from './DataSources';
 import { tariffScraper } from '../services/tariffScraper';
 import { dataParser } from '../services/dataParser';
-import { TariffData } from '../types/tariff.types';
 
-export const TariffDashboard: React.FC = () => {
+export const TariffDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [tariffData, setTariffData] = useState<TariffData | null>(null); // NOW USING TariffData TYPE
+  const [tariffData, setTariffData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('current');
 
   useEffect(() => {
@@ -21,8 +20,7 @@ export const TariffDashboard: React.FC = () => {
     setLoading(true);
     try {
       const rawData = await tariffScraper.fetchCurrentTariffs();
-      const parsed: TariffData = dataParser.parseTariffData(rawData); // USING TYPE HERE
-      setTariffData(parsed);
+      setTariffData(rawData);
     } catch (error) {
       console.error('Failed to load tariff data:', error);
     } finally {
@@ -57,7 +55,8 @@ export const TariffDashboard: React.FC = () => {
     );
   }
 
-  const htsBreakdown = dataParser.getHTSBreakdown(tariffData);
+  const parsedData = dataParser.parseTariffData(tariffData);
+  const htsBreakdown = dataParser.getHTSBreakdown(parsedData);
   const scenarios = dataParser.getScenarios();
   const daysUntil = tariffScraper.calculateDaysUntil('2026-11-10');
 
@@ -131,7 +130,7 @@ export const TariffDashboard: React.FC = () => {
       <div className="tab-content">
         {activeTab === 'current' && (
           <CurrentStatus 
-            tariffData={tariffData} 
+            tariffData={parsedData} 
             htsBreakdown={htsBreakdown}
             daysUntil={daysUntil}
           />
@@ -148,8 +147,8 @@ export const TariffDashboard: React.FC = () => {
         {activeTab === 'sources' && (
           <DataSources 
             sources={tariffData.sources}
-            isCached={false}
-            cacheNote=""
+            isCached={tariffData.isCached}
+            cacheNote={tariffData.cacheNote}
           />
         )}
       </div>
