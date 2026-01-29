@@ -1,11 +1,10 @@
-import React from 'react';
 import { ScenarioData } from '../types/tariff.types';
 
 interface ScenarioCardsProps {
   scenarios: ScenarioData[];
 }
 
-export const ScenarioCards: React.FC<ScenarioCardsProps> = ({ scenarios }) => {
+export const ScenarioCards = ({ scenarios }: ScenarioCardsProps) => {
   const getScenarioClass = (id: string) => {
     if (id === 'A') return 'scenario-good';
     if (id === 'B') return 'scenario-medium';
