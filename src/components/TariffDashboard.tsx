@@ -10,7 +10,7 @@ import { TariffData } from '../types/tariff.types';
 export const TariffDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [tariffData, setTariffData] = useState<any>(null);
+  const [tariffData, setTariffData] = useState<TariffData | null>(null); // NOW USING TariffData TYPE
   const [activeTab, setActiveTab] = useState('current');
 
   useEffect(() => {
@@ -21,7 +21,8 @@ export const TariffDashboard: React.FC = () => {
     setLoading(true);
     try {
       const rawData = await tariffScraper.fetchCurrentTariffs();
-      setTariffData(rawData);
+      const parsed: TariffData = dataParser.parseTariffData(rawData); // USING TYPE HERE
+      setTariffData(parsed);
     } catch (error) {
       console.error('Failed to load tariff data:', error);
     } finally {
@@ -56,8 +57,7 @@ export const TariffDashboard: React.FC = () => {
     );
   }
 
-  const parsedData = dataParser.parseTariffData(tariffData);
-  const htsBreakdown = dataParser.getHTSBreakdown(parsedData);
+  const htsBreakdown = dataParser.getHTSBreakdown(tariffData);
   const scenarios = dataParser.getScenarios();
   const daysUntil = tariffScraper.calculateDaysUntil('2026-11-10');
 
@@ -131,7 +131,7 @@ export const TariffDashboard: React.FC = () => {
       <div className="tab-content">
         {activeTab === 'current' && (
           <CurrentStatus 
-            tariffData={parsedData} 
+            tariffData={tariffData} 
             htsBreakdown={htsBreakdown}
             daysUntil={daysUntil}
           />
@@ -148,8 +148,8 @@ export const TariffDashboard: React.FC = () => {
         {activeTab === 'sources' && (
           <DataSources 
             sources={tariffData.sources}
-            isCached={tariffData.isCached}
-            cacheNote={tariffData.cacheNote}
+            isCached={false}
+            cacheNote=""
           />
         )}
       </div>
