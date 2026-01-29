@@ -1,4 +1,3 @@
-import React from 'react';
 import { TariffDashboard } from './components/TariffDashboard';
 import './App.css';
 
