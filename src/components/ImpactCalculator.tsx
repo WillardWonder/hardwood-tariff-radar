@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { dataParser } from '../services/dataParser';
 
-export const ImpactCalculator: React.FC = () => {
+export const ImpactCalculator = () => {
   const [revenue, setRevenue] = useState(45);
   const [exportPct, setExportPct] = useState(35);
   const [chinaPct, setChinaPct] = useState(60);
@@ -100,11 +100,11 @@ export const ImpactCalculator: React.FC = () => {
         <div className="troy-quote">
           <div className="quote-icon">📌</div>
           <div className="quote-content">
-            <strong>Troy Brown's Key Message:</strong>
+            <strong>Troy Brown Key Message:</strong>
             <p>
-              "We've stopped reinvesting in our mills because we can't predict whether our export 
-              markets will exist in 90 days. That's not a business decision—that's policy uncertainty 
-              destroying American manufacturing."
+              We have stopped reinvesting in our mills because we cannot predict whether our export 
+              markets will exist in 90 days. That is not a business decision—that is policy uncertainty 
+              destroying American manufacturing.
             </p>
           </div>
         </div>
