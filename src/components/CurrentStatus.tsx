@@ -1,4 +1,3 @@
-import React from 'react';
 import { TariffData, HTSCode } from '../types/tariff.types';
 
 interface CurrentStatusProps {
@@ -7,11 +6,11 @@ interface CurrentStatusProps {
   daysUntil: number;
 }
 
-export const CurrentStatus: React.FC<CurrentStatusProps> = ({ 
+export const CurrentStatus = ({ 
   tariffData, 
   htsBreakdown, 
   daysUntil 
-}) => {
+}: CurrentStatusProps) => {
   return (
     <div className="current-status">
       <div className="alert-banner critical">
